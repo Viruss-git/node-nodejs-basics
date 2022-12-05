@@ -5,14 +5,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const read = async () => {
-    fs.readFile(
-        path.join(__dirname, 'files', 'fileToRead.txt'),
-        (err, data) => {
-            if (err) {
-                throw 'FS operation failed';
-            }
-            console.log(Buffer.from(data).toString());
-        });
+    const filePath = path.join(__dirname, 'files', 'fileToRead.txt');
+    if (fs.existsSync(filePath)) {
+        fs.readFile(
+            filePath,
+            (err, data) => {
+                if (err) throw err
+                console.log(Buffer.from(data).toString());
+            });
+    } else {
+        console.error('FS operation failed');
+    };
 };
 
 await read();
